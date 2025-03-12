@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Cute Bucket List 💖</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+        
+        body {
+            font-family: 'Pacifico', cursive;
+            background: linear-gradient(to bottom right, #ffdde1, #ee9ca7);
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border: 3px dashed #ff80ab;
+        }
+        h2 {
+            color: #ff4081;
+            font-size: 24px;
+        }
+        input {
+            width: 70%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 2px solid #ff80ab;
+            border-radius: 10px;
+            font-family: 'Arial', sans-serif;
+            outline: none;
+            text-align: center;
+        }
+        button {
+            background: #ff80ab;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 20px;
+            font-size: 16px;
+            font-family: 'Pacifico', cursive;
+        }
+        button:hover {
+            background: #ff4081;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #fff0f6;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Arial', sans-serif;
+        }
+        .checked {
+            text-decoration: line-through;
+            color: #999;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+            accent-color: #ff4081;
+            transform: scale(1.2);
+        }
+        .remove-btn {
+            background: #ff1744;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Arial', sans-serif;
+        }
+        .remove-btn:hover {
+            background: #d50000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🌸 My Cute Bucket List 🌸</h2>
+        <input type="text" id="taskInput" placeholder="Add a dream...">
+        <button onclick="addTask()">Add</button>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        function addTask() {
+            let taskInput = document.getElementById("taskInput");
+            let taskText = taskInput.value.trim();
+            if (taskText === "") return;
+
+            let listItem = document.createElement("li");
+            listItem.innerHTML = `
+                <input type="checkbox" onclick="toggleCheck(this)">
+                <span>${taskText}</span>
+                <button class="remove-btn" onclick="removeTask(this)">❌</button>
+            `;
+
+            document.getElementById("taskList").appendChild(listItem);
+            taskInput.value = "";
+        }
+
+        function toggleCheck(checkbox) {
+            let taskText = checkbox.nextElementSibling;
+            taskText.classList.toggle("checked", checkbox.checked);
+        }
+
+        function removeTask(button) {
+            let listItem = button.parentElement;
+            listItem.remove();
+        }
+    </script>
+
+</body>
+</html>

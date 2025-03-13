@@ -97,30 +97,54 @@
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", loadTasks);
+
         function addTask() {
             let taskInput = document.getElementById("taskInput");
             let taskText = taskInput.value.trim();
             if (taskText === "") return;
 
-            let listItem = document.createElement("li");
-            listItem.innerHTML = `
-                <input type="checkbox" onclick="toggleCheck(this)">
-                <span>${taskText}</span>
-                <button class="remove-btn" onclick="removeTask(this)">❌</button>
-            `;
+            let task = { text: taskText, completed: false };
+            let tasks = JSON.parse(localStorage.getItem("bucketList")) || [];
+            tasks.push(task);
+            localStorage.setItem("bucketList", JSON.stringify(tasks));
 
-            document.getElementById("taskList").appendChild(listItem);
             taskInput.value = "";
+            renderTasks();
         }
 
-        function toggleCheck(checkbox) {
-            let taskText = checkbox.nextElementSibling;
-            taskText.classList.toggle("checked", checkbox.checked);
+        function toggleCheck(index) {
+            let tasks = JSON.parse(localStorage.getItem("bucketList")) || [];
+            tasks[index].completed = !tasks[index].completed;
+            localStorage.setItem("bucketList", JSON.stringify(tasks));
+            renderTasks();
         }
 
-        function removeTask(button) {
-            let listItem = button.parentElement;
-            listItem.remove();
+        function removeTask(index) {
+            let tasks = JSON.parse(localStorage.getItem("bucketList")) || [];
+            tasks.splice(index, 1);
+            localStorage.setItem("bucketList", JSON.stringify(tasks));
+            renderTasks();
+        }
+
+        function loadTasks() {
+            renderTasks();
+        }
+
+        function renderTasks() {
+            let taskList = document.getElementById("taskList");
+            taskList.innerHTML = "";
+            let tasks = JSON.parse(localStorage.getItem("bucketList")) || [];
+
+            tasks.forEach((task, index) => {
+                let listItem = document.createElement("li");
+                listItem.innerHTML = `
+                    <input type="checkbox" ${task.completed ? "checked" : ""} onclick="toggleCheck(${index})">
+                    <span class="${task.completed ? "checked" : ""}">${task.text}</span>
+                    <button class="remove-btn" onclick="removeTask(${index})">❌</button>
+                `;
+                taskList.appendChild(listItem);
+            });
         }
     </script>
 
